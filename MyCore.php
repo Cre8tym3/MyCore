@@ -1,13 +1,13 @@
 <?php
 
 $feed = urldecode($feed);
-$hello = "world";
-
+$ry= $_GET['$ry'];
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-$sql = "SELECT * FROM DaFeeds WHERE rank='' AND ry=$ry ORDER BY RAND() LIMIT 0,1;";
+if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank=$ry ORDER BY RAND() LIMIT 0,1;"; }
+  else { $sql = "SELECT * FROM DaFeeds WHERE rank='' ORDER BY RAND() LIMIT 0,1;"; }
 //echo "$sql";
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
