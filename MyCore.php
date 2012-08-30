@@ -6,7 +6,7 @@ $feed = urldecode($feed);
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-$sql = "SELECT * FROM DaFeeds WHERE rank='' ORDER BY RAND() LIMIT 0,1;";
+$sql = "SELECT * FROM DaFeeds WHERE rank='' AND ry=$ry ORDER BY RAND() LIMIT 0,1;";
 //echo "$sql";
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
