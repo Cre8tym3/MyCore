@@ -1,7 +1,6 @@
 <?php
 
 $feed = urldecode($feed);
-$hello = "world";
 
 
 $db = mysql_connect("localhost","root","password");
