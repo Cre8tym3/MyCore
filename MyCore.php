@@ -1,13 +1,15 @@
 <?php
 
 $feed = urldecode($feed);
-$ry= $_GET['$ry'];
+$nid =$_GET['nid'];
+$ry= $_GET['ry'];
+$rank= $_GET['rank'];
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank=$ry ORDER BY RAND() LIMIT 0,1;"; }
-  else { $sql = "SELECT * FROM DaFeeds WHERE rank='' ORDER BY RAND() LIMIT 0,1;"; }
+if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND() LIMIT 0,1;"; }
+  else { $sql = "SELECT * FROM DaFeeds ORDER BY RAND() LIMIT 0,1;"; }
 //echo "$sql";
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
@@ -17,11 +19,12 @@ if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank=$ry ORDER BY RAND() LIMIT 0,1
 			while ($myrow = mysql_fetch_array($result)) {	
 			 $feeder = $myrow['url'];
 			 $id = $myrow['id'];
+			  $rank = $myrow['rank'];
 			
 			}
 		}
 //echo $feeder;
-$nid =$_GET['nid'];
+
 
 // Start counting time for the page load
 $starttime = explode(' ', microtime());
@@ -113,9 +116,9 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>"
+var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>"
 //change the second to start counting down from
-var countdownfrom=240
+var countdownfrom=90
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
@@ -133,17 +136,18 @@ setTimeout("countredirect()",1000)
 
 countredirect()
 //-->
-</script></td>
-    <td><form action="MyStatus.php" method="get"  class='searchform'> 
+</script>
+</td>
+    <td><form action="MyRank.php" method="get"  class='searchform'> 
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
-        <input type="hidden" name="id" value="<?php echo $id; ?>" />
+        <input type="hidden" name="id" value="<?php echo $nid; ?>" />
        Status:
-        <input type="text" name="status" value="" class="text searchfield" id="feed_input" size='3' />
+        <input type="text" name="status" value="<? echo $rank ?>" class="text searchfield" id="feed_input" size='3' />
         &nbsp;<? echo "(".$nid.")"; ?>
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
       </form></td>
-    <td><p>Next up: <a href="#" onClick="parent.location='MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>'"><? echo $feeder; ?></a></p></td>
+    <td><p>Next up: <a href="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>"><? echo $feeder; ?></a></p></td>
   </tr>
 </table>
 
