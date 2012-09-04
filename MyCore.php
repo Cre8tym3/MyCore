@@ -3,7 +3,7 @@
 $feed = urldecode($feed);
 $nid =$_GET['nid'];
 $ry= $_GET['ry'];
-$rank= $_GET['rank'];
+$nrank= $_GET['rank'];
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
@@ -118,7 +118,7 @@ Over 400+ free scripts here!
 //change below target URL to your own
 var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>"
 //change the second to start counting down from
-var countdownfrom=90
+var countdownfrom=45
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
@@ -142,7 +142,7 @@ countredirect()
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
        Status:
-        <input type="text" name="status" value="<? echo $rank ?>" class="text searchfield" id="feed_input" size='3' />
+        <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='3' />
         &nbsp;<? echo "(".$nid.")"; ?>
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
