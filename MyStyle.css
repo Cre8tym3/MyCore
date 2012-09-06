@@ -1,6 +1,6 @@
 *{ box-sizing: border-box;} 
 body { background: #252a32;  font-family: Arial, Helvetica, sans-serif;  letter-spacing: 0.07em; }
-.chunk {  width: 20%; float: left; border: 1px solid #000;  height: 430px;  padding: .5em; overflow:auto; color: #93a1a1; font-size: 75% ; 
+.chunk {  width: 14.285%; float: left; border: 1px solid #000;  height: 430px;  padding: .5em; overflow:auto; color: #93a1a1; font-size: 75% ; 
 }
 /* 
 6 = 16.666% 
@@ -11,6 +11,7 @@ body { background: #252a32;  font-family: Arial, Helvetica, sans-serif;  letter-
 p, h4 span {  color: #b58900; }
 a { color: #cb4b16;  text-decoration:none; }
 img { max-width: 100%; max-height: 200px; }
+label, form span { font-size: 75%; }
 
 
 /* Step 1: Build an Animation */

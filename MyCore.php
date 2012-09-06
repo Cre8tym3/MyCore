@@ -9,9 +9,9 @@ $nrating= $_GET['rating'];
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND() LIMIT 0,1;"; }
-  else { $sql = "SELECT * FROM DaFeeds ORDER BY RAND(), rating LIMIT 0,2;"; }
-//echo "$sql";
+if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND(), rating DESC  LIMIT 2) s ORDER BY s.rating ASC"; }
+  else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; }
+
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
 
@@ -20,15 +20,12 @@ if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAN
 			while ($myrow = mysql_fetch_array($result)) {	
 			 $feeder = $myrow['url'];
 			 $id = $myrow['id'];
-			  $rank = $myrow['rank'];
-			  $rating = $myrow['rating'];
+			 $rank = $myrow['rank'];
+			 $rating = $myrow['rating'];
 			  
-			  $temp .= "$rating -" ;
-			
+			 $temp .= ".$rating";		
 			}
 		}
-
-
 
 // Start counting time for the page load
 $starttime = explode(' ', microtime());
@@ -143,11 +140,11 @@ countredirect()
     <td><form action="MyRank.php" method="get"  class='searchform'>
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
-        Status:
-        <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='3' />
-        >>>  Rating:
-        <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='3' />
-        &nbsp;<? echo "(".$nid.")"; ?>
+        <label for='status'>&nbsp;Categories:</label>
+        <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
+        <span>>>></span>  <label for='rating'>Rating:</label>
+        <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
+        &nbsp;<span><? echo "(".$nid.")"; ?></span>
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
       </form></td>
