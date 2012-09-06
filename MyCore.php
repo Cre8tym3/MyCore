@@ -4,12 +4,13 @@ $feed = urldecode($feed);
 $nid =$_GET['nid'];
 $ry= $_GET['ry'];
 $nrank= $_GET['rank'];
+$nrating= $_GET['rating'];
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
 if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND() LIMIT 0,1;"; }
-  else { $sql = "SELECT * FROM DaFeeds ORDER BY RAND() LIMIT 0,1;"; }
+  else { $sql = "SELECT * FROM DaFeeds ORDER BY RAND(), rating LIMIT 0,2;"; }
 //echo "$sql";
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
@@ -20,10 +21,13 @@ if($ry) { $sql = "SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAN
 			 $feeder = $myrow['url'];
 			 $id = $myrow['id'];
 			  $rank = $myrow['rank'];
+			  $rating = $myrow['rating'];
+			  
+			  $temp .= "$rating -" ;
 			
 			}
 		}
-//echo $feeder;
+
 
 
 // Start counting time for the page load
@@ -92,7 +96,6 @@ $feed->handle_content_type();
 ?>
 <!DOCTYPE html>
 
-
 <html lang="en-US">
 <head>
 <title>Feed Monster</title>
@@ -116,7 +119,7 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>"
+var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
 //change the second to start counting down from
 var countdownfrom=45
 
@@ -136,25 +139,21 @@ setTimeout("countredirect()",1000)
 
 countredirect()
 //-->
-</script>
-</td>
-    <td><form action="MyRank.php" method="get"  class='searchform'> 
+</script></td>
+    <td><form action="MyRank.php" method="get"  class='searchform'>
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
-       Status:
+        Status:
         <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='3' />
+        >>>  Rating:
+        <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='3' />
         &nbsp;<? echo "(".$nid.")"; ?>
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
       </form></td>
-    <td><p>Next up: <a href="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>"><? echo $feeder; ?></a></p></td>
+    <td><p> <? echo $temp; ?> Next up: <a href="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"><? echo $feeder; ?></a></p></td>
   </tr>
 </table>
-
-
-
-
-
 <?php
 			// Check to see if there are more than zero errors (i.e. if there are any errors at all)
 			if ($feed->error())
@@ -180,9 +179,8 @@ countredirect()
     <?php if ($feed->get_link()) echo '<a href="' . $feed->get_link() . '">'; echo $feed->get_title(); if ($feed->get_link()) echo '</a>'; ?>
   </h3>
   
-<!-- If the feed has a description, display it. -->
-					<?php echo $feed->get_description(); ?>
-</div>
+  <!-- If the feed has a description, display it. --> 
+  <?php echo $feed->get_description(); ?> </div>
 
 <!-- Let's begin looping through each individual news item in the feed. -->
 <?php foreach($feed->get_items() as $item): ?>

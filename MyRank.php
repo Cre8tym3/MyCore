@@ -2,6 +2,7 @@
 
 $id =$_GET['id'];
 $status= $_GET['status'];
+$rating= $_GET['rating'];
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
@@ -9,7 +10,7 @@ mysql_select_db("feeder",$db);
 ############################################################
 
 
-	$sql="UPDATE DaFeeds set rank='$status' WHERE id='$id'";
+	$sql="UPDATE DaFeeds set rank='$status', rating='$rating' WHERE id='$id'";
 	
 	echo $sql;
 			$result = mysql_query($sql,$db);

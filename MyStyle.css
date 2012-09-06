@@ -1,18 +1,20 @@
 *{ box-sizing: border-box;} 
-body { background: #252a32;  font-family: Arial, Helvetica, sans-serif;  letter-spacing: 0.07em;
-
--webkit-animation:bounceIn 2s; }
-.chunk {  width: 14.285%; float: left; border: 1px solid #000;  height: 430px;  padding: .5em; overflow:auto; color: #93a1a1; font-size: 75% ; 
+body { background: #252a32;  font-family: Arial, Helvetica, sans-serif;  letter-spacing: 0.07em; }
+.chunk {  width: 20%; float: left; border: 1px solid #000;  height: 430px;  padding: .5em; overflow:auto; color: #93a1a1; font-size: 75% ; 
 }
-/* 6 = 16.666% */
+/* 
+6 = 16.666% 
+7 = 14.285%
+*/
 
 
 p, h4 span {  color: #b58900; }
 a { color: #cb4b16;  text-decoration:none; }
-img { max-width: 100%; }
+img { max-width: 100%; max-height: 200px; }
 
 
 /* Step 1: Build an Animation */
+/*
 @-webkit-keyframes aniload {
 from{-webkit-transform:translate(0px, 1000px)}
 to{-webkit-transform:translate(0px, 0px)}
@@ -32,7 +34,7 @@ to{-ms-transform:translate(0px, 0px)}
 from{transform:translate(0px, 1000px)}
 to{transform:translate(0px, 0px)}
 }
-
+*/
 
 /* Step 2: Call the Animation */
 #box1{
