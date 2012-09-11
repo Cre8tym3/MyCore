@@ -11,6 +11,8 @@ mysql_select_db("feeder",$db);
 
 if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND(), rating DESC  LIMIT 2) s ORDER BY s.rating ASC"; }
   else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; }
+  // Lets rate up some sleepers
+ // else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating='0' ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; } 
 
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
@@ -118,7 +120,7 @@ Over 400+ free scripts here!
 //change below target URL to your own
 var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
 //change the second to start counting down from
-var countdownfrom=45
+var countdownfrom=75
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
@@ -137,7 +139,7 @@ setTimeout("countredirect()",1000)
 countredirect()
 //-->
 </script></td>
-    <td><form action="MyRank.php" method="get"  class='searchform'>
+    <td><form action="MyRank.php" method="get"  class='searchform' name='ranker'>
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
@@ -147,7 +149,13 @@ countredirect()
         &nbsp;<span><? echo "(".$nid.")"; ?></span>
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
-      </form></td>
+      </form>
+      
+ <script type="text/javascript">
+ document.ranker.rating.focus();
+</script>
+      
+      </td>
     <td><p> <? echo $temp; ?> Next up: <a href="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"><? echo $feeder; ?></a></p></td>
   </tr>
 </table>
