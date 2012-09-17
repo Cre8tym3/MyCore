@@ -9,10 +9,10 @@ $nrating= $_GET['rating'];
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' ORDER BY RAND(), rating DESC  LIMIT 2) s ORDER BY s.rating ASC"; }
-  else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; }
+if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; }
+  else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; }
   // Lets rate up some sleepers
- // else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating='0' ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; } 
+  //else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating='0' ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; } 
 
 	$result = mysql_query($sql,$db);	
 	if ($result) { $num_rows = mysql_num_rows($result); } else { $num_rows="0"; }
@@ -25,7 +25,7 @@ if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."
 			 $rank = $myrow['rank'];
 			 $rating = $myrow['rating'];
 			  
-			 $temp .= ".$rating";		
+			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."'>".$feeder."</a><br>";		
 			}
 		}
 
@@ -99,6 +99,15 @@ $feed->handle_content_type();
 <head>
 <title>Feed Monster</title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
+<style>
+.chunk {  
+width: <? if($ry){ echo "16.666"; }else{ echo "14.285"; } ?>%;  }
+<!--
+6 = 16.666% 
+7 = 14.285%
+8 = 12.5%
+-->
+</style>
 </head>
 
 <body id="bodydemo" >
@@ -144,7 +153,7 @@ countredirect()
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
         <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
-        <span>>>></span>  <label for='rating'>Rating:</label>
+        <label for='rating'>Rating:</label>
         <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
         &nbsp;<span><? echo "(".$nid.")"; ?></span>
         <input type="submit" value="rank" class="button searchbutton" />
@@ -156,7 +165,7 @@ countredirect()
 </script>
       
       </td>
-    <td><p> <? echo $temp; ?> Next up: <a href="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"><? echo $feeder; ?></a></p></td>
+    <td><p class='next'><? echo "$ry $temp"; ?></p></td>
   </tr>
 </table>
 <?php
