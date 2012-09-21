@@ -28,7 +28,6 @@ if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."
 			 $rank = $myrow['rank'];
 			 $rating = $myrow['rating'];
 			  
-			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."'>".$feeder."</a><br>";		
 			}
 		}
 
@@ -96,21 +95,13 @@ $feed->handle_content_type();
 // When we end our PHP block, we want to make sure our DOCTYPE is on the top line to make
 // sure that the browser snaps into Standards Mode.
 ?>
+
 <!DOCTYPE html>
 
 <html lang="en-US">
 <head>
 <title>Feed Monster</title>
-<link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
-<style>
-.chunk {  
-width: <? if($ry){ echo "16.666"; }else{ echo "14.285"; } ?>%;  }
-<!--
-6 = 16.666% 
-7 = 14.285%
-8 = 12.5%
--->
-</style>
+
 </head>
 
 <body id="bodydemo" >
@@ -130,9 +121,9 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
+var targetURL="temp.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
 //change the second to start counting down from
-var countdownfrom=55
+var countdownfrom=30
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
@@ -171,90 +162,55 @@ countredirect()
     <td><p class='next'><? echo "$ry $temp"; ?></p></td>
   </tr>
 </table>
+
+
 <?php
-			// Check to see if there are more than zero errors (i.e. if there are any errors at all)
-			if ($feed->error())
-			{
-				// If so, start a <div> element with a classname so we can style it.
-				echo '<div class="sp_errors">' . "\r\n";
 
-					// ... and display it.
-					echo '<p>' . htmlspecialchars($feed->error()) . "</p>\r\n";
 
-				// Close the <div> element we opened.
-				echo '</div>' . "\r\n";
-			}
-			?>
-<div id="sp_results">
+
+
+?>
+
 
 <!-- As long as the feed has data to work with... -->
 <?php if ($success): ?>
-<div class="chunk focus" align="center"> 
+
   
-  <!-- If the feed has a link back to the site that publishes it (which 99% of them do), link the feed's title to it. -->
-  <h3 class="header">
-    <?php if ($feed->get_link()) echo '<a href="' . $feed->get_link() . '">'; echo $feed->get_title(); if ($feed->get_link()) echo '</a>'; ?>
-  </h3>
-  
-  <!-- If the feed has a description, display it. --> 
-  <?php echo $feed->get_description(); ?> </div>
+
 
 <!-- Let's begin looping through each individual news item in the feed. -->
 <?php foreach($feed->get_items() as $item): ?>
-<div class="chunk <?php if($MyDay==$item->get_date('j')) { echo " Today"; }  ?>" id="box<? echo $i; ?>"> 
-  
-  <!-- If the item has a permalink back to the original post (which 99% of them do), link the item's title to it. -->
-  <h4>
-    <?php if ($item->get_permalink()) echo '<a href="' . $item->get_permalink() . '">'; echo $item->get_title(); if ($item->get_permalink()) echo '</a>'; ?>
-    <br / >
-    <span>( <?php echo $item->get_date('j M Y, g:i a'); ?> )</span></h4>
-   
-  
-  <!-- Display the item's primary content. --> 
-  <?php echo "<p>".$item->get_content()."";
-						
-						
-						
-						
-						
-						
-						// Check for enclosures.  If an item has any, set the first one to the $enclosure variable.
-						if ($enclosure = $item->get_enclosure(0))
-						{
-							// Use the embed() method to embed the enclosure into the page inline.
-							echo '<div align="center">';
-							echo '<p>' . $enclosure->embed(array(
-								'audio' => './for_the_demo/place_audio.png',
-								'video' => './for_the_demo/place_video.png',
-								'mediaplayer' => './for_the_demo/mediaplayer.swf',
-								'altclass' => 'download'
-							)) . '</p>';
+	<?php if($MyDay==$item->get_date('j')) { 
+	$LoadMe .= "<div class='chunk'>";
+	$LoadMe .= $feed->get_title();
+	$LoadMe .= "<a href='".$item->get_permalink().">".$item->get_title()."</a>";
+	
+	$LoadMe .= $item->get_content();
+	$LoadMe .= "</div>";
 
-							if ($enclosure->get_link() && $enclosure->get_type())
-							{
-								echo '<p class="footnote" align="center">(' . $enclosure->get_type();
-								if ($enclosure->get_size())
-								{
-									echo '; ' . $enclosure->get_size() . ' MB';
-								}
-								echo ')</p>';
-							}
-							if ($enclosure->get_thumbnail())
-							{
-								echo '<div><img src="' . $enclosure->get_thumbnail() . '" alt="" /></div>';
-							}
-							echo '</div>';
-							
-						}
-						?> </div>
 
-<!-- Stop looping through each item once we've gone through all of them. -->
-<?php
-				$i++;
-				if($i > 5) { $i="1"; }
-				 endforeach; ?>
+	} 
+
+ endforeach; ?>
 
 <!-- From here on, we're no longer using data from the feed. -->
 <?php endif; ?>
+
+
+<?php
+$file = 'people.txt';
+// Append a new person to the file
+$current = "".$LoadMe."\n";
+// Open the file to get existing content
+$current .= file_get_contents($file);
+
+// Write the contents back to the file
+file_put_contents($file, $current);
+?>
+
+
+
+
 </body>
 </html>
+
