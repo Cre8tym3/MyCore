@@ -103,12 +103,15 @@ $feed->handle_content_type();
 <title>Feed Monster</title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
-.chunk {  
-width: <? if($ry){ echo "16.666"; }else{ echo "14.285"; } ?>%;  }
+.chunk { width: <? if($ry) {
+echo "16.666";
+}
+else { echo "14.285";
+}
+?>%;
+}
 <!--
-6 = 16.666% 
-7 = 14.285%
-8 = 12.5%
+6 = 16.666% 7 = 14.285% 8 = 12.5%
 -->
 </style>
 </head>
@@ -116,7 +119,8 @@ width: <? if($ry){ echo "16.666"; }else{ echo "14.285"; } ?>%;  }
 <body id="bodydemo" >
 <table id='tools'>
   <tr>
-    <td><form name="redirect" class='searchform'>
+    <td>
+    <form name="redirect" class='searchform'>
       <form class='searchform'>
         <input type="text" size="3" name="redirect2"  class="searchfield">
       </form>
@@ -151,7 +155,8 @@ setTimeout("countredirect()",1000)
 countredirect()
 //-->
 </script></td>
-    <td><form action="MyRank.php" method="get"  class='searchform' name='ranker'>
+    <td>
+    <form action="MyRank.php" method="get"  class='searchform' name='ranker'>
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
@@ -162,12 +167,9 @@ countredirect()
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
       </form>
-      
- <script type="text/javascript">
+      <script type="text/javascript">
  document.ranker.rating.focus();
-</script>
-      
-      </td>
+</script></td>
     <td><p class='next'><? echo "$ry $temp"; ?></p></td>
   </tr>
 </table>
@@ -208,7 +210,6 @@ countredirect()
     <?php if ($item->get_permalink()) echo '<a href="' . $item->get_permalink() . '">'; echo $item->get_title(); if ($item->get_permalink()) echo '</a>'; ?>
     <br / >
     <span>( <?php echo $item->get_date('j M Y, g:i a'); ?> )</span></h4>
-   
   
   <!-- Display the item's primary content. --> 
   <?php echo "<p>".$item->get_content()."";
