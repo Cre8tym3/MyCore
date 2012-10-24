@@ -8,6 +8,8 @@ $nrating= $_GET['rating'];
 
 date_default_timezone_set('America/New_York');
 $MyDay=date(d);
+$MyYesterday = ($MyDay-"1");
+
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
@@ -136,7 +138,7 @@ Over 400+ free scripts here!
 //change below target URL to your own
 var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
 //change the second to start counting down from
-var countdownfrom=<? if($ry) { echo "75"; }else{ echo "45"; } ?>
+var countdownfrom=<? if($ry) { echo "75"; }else{ echo "40"; } ?>
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
@@ -203,7 +205,7 @@ countredirect()
 
 <!-- Let's begin looping through each individual news item in the feed. -->
 <?php foreach($feed->get_items() as $item): ?>
-<div class="chunk <?php if($MyDay==$item->get_date('j')) { echo " Today"; }  ?>" id="box<? echo $i; ?>"> 
+<div class="chunk <?php if($MyDay==$item->get_date('j')) { echo " Today"; } if($MyYesterday==$item->get_date('j')) { echo " Yesterday"; }   ?>" id="box<? echo $i; ?>"> 
   
   <!-- If the item has a permalink back to the original post (which 99% of them do), link the item's title to it. -->
   <h4>
