@@ -29,6 +29,7 @@ if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."
 			 $id = $myrow['id'];
 			 $rank = $myrow['rank'];
 			 $rating = $myrow['rating'];
+			 $i++;
 			  
 			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."'>".$feeder."</a><br>";		
 			}
