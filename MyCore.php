@@ -139,21 +139,30 @@ Over 400+ free scripts here!
 //change below target URL to your own
 var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
 //change the second to start counting down from
-var countdownfrom=<? if($ry) { echo "75"; }else{ echo "40"; } ?>
+var countdownfrom=
+<? 
+	if($ry) { 
+			echo "75"; 
+		}else{ 
+			if($nrating == "4") { echo "60"; }
+			if($nrating == "3") { echo "50"; }
+			if($nrating == "2") { echo "40"; }
+			if($nrating == "1") { echo "30"; }			
+		 } 
+?>
 
 
 var currentsecond=document.redirect.redirect2.value=countdownfrom+1
-function countredirect(){
-if (currentsecond!=1){
-currentsecond-=1
-document.redirect.redirect2.value=currentsecond
-}
-else{
-window.location=targetURL
-return
-}
-setTimeout("countredirect()",1000)
-}
+	function countredirect(){
+		if (currentsecond!=1){
+		currentsecond-=1
+		document.redirect.redirect2.value=currentsecond
+		}else{
+			window.location=targetURL
+			return
+		}
+			setTimeout("countredirect()",1000)
+	}
 
 countredirect()
 //-->
