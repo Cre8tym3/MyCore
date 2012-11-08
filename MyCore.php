@@ -106,16 +106,21 @@ $feed->handle_content_type();
 <title>Feed Monster</title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
-.chunk { width: <? if($ry) {
-echo "16.666";
-}
-else { echo "14.285";
-}
-?>%;
-}
-<!--
-6 = 16.666% 7 = 14.285% 8 = 12.5%
--->
+ <? 
+ if($ry) {
+		echo ".chunk { max-width: 16.666%; }";
+		echo ".Today { max-width: 33.33%; }"; // 16.66*2=33.33
+		echo ".Yesterday { max-width: 25%; }"; // 16.66*1.5=25
+	}else{ 
+		echo ".chunk { max-width: 14.285%; }";
+		echo ".Today { max-width: 28.5%; }"; // 14.28*2=28.5
+		echo ".Yesterday { max-width: 21.5%; }"; // 14.28*1.5=21.5
+	}
+// 	6 = 16.666% 7 = 14.285% 8 = 12.5%
+if(strpos($nrank,'h') !== false){ 
+	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; }";
+	}
+?>
 </style>
 </head>
 
@@ -224,11 +229,7 @@ countredirect()
     <span>( <?php echo $item->get_date('j M Y, g:i a'); ?> )</span></h4>
   
   <!-- Display the item's primary content. --> 
-  <?php echo "<p>".$item->get_content()."";
-						
-						
-						
-						
+  <?php echo "<p>".$item->get_content()."";						
 						
 						
 						// Check for enclosures.  If an item has any, set the first one to the $enclosure variable.
