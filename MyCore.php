@@ -113,12 +113,12 @@ $feed->handle_content_type();
 		echo ".Yesterday { max-width: 25%; }"; // 16.66*1.5=25
 	}else{ 
 		echo ".chunk { max-width: 14.285%; }";
-		echo ".Today { max-width: 28.5%; }"; // 14.28*2=28.5
-		echo ".Yesterday { max-width: 21.5%; }"; // 14.28*1.5=21.5
+		echo ".Today { max-width: 28.5%;  font-size: 90%;}"; // 14.28*2=28.5
+		echo ".Yesterday { max-width: 21.5%;  font-size: 90%; }"; // 14.28*1.5=21.5
 	}
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
 if(strpos($nrank,'h') !== false){ 
-	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; }";
+	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; font-size: 75%; }";
 	}
 ?>
 </style>
