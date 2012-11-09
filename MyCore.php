@@ -6,6 +6,14 @@ $ry= $_GET['ry'];
 $nrank= $_GET['rank'];
 $nrating= $_GET['rating'];
 
+function random_pic($dir = 'RavesRuns')
+{
+    $files = glob($dir . '/*.*');
+    $file = array_rand($files);
+    return $files[$file];
+}
+
+
 date_default_timezone_set('America/New_York');
 $MyDay=date(d);
 $MyYesterday = ($MyDay-"1");
@@ -107,13 +115,23 @@ $feed->handle_content_type();
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
  <? 
+ //echo "body { background: url('".random_pic()."') #252a32; } ";
+ 
+echo " #sp_results:after {
+    content: \"\"; background: url(".random_pic().") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    opacity: 0.5;  top: 0; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1;  }";
+ 
  if($ry) {
 		echo ".chunk { max-width: 16.666%; }";
 		echo ".Today { max-width: 33.33%; }"; // 16.66*2=33.33
 		echo ".Yesterday { max-width: 25%; }"; // 16.66*1.5=25
 	}else{ 
 		echo ".chunk { max-width: 14.285%; }";
-		echo ".Today { max-width: 28.5%;  font-size: 90%;}"; // 14.28*2=28.5
+		echo ".Today { max-width: 28.5%;  font-size: 100%;}"; // 14.28*2=28.5
 		echo ".Yesterday { max-width: 21.5%;  font-size: 90%; }"; // 14.28*1.5=21.5
 	}
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
@@ -188,6 +206,31 @@ countredirect()
  document.ranker.rating.focus();
 </script></td>
     <td><p class='next'><? echo "$ry $temp"; ?></p></td>
+    <td>
+    
+    <script type="text/javascript">
+<!--
+	var currentTime = new Date()
+	var hours = currentTime.getHours()
+	var minutes = currentTime.getMinutes()
+
+	if (minutes < 10)
+	minutes = "0" + minutes
+
+	var suffix = "am";
+	if (hours >= 12) {
+	suffix = "pm";
+	hours = hours - 12;
+	}
+	if (hours == 0) {
+	hours = 12;
+	}
+
+	document.write("<h4><span>" + hours + ":" + minutes + " " + suffix + "</span></h4>")
+//-->
+</script>
+
+</td>
   </tr>
 </table>
 <?php
