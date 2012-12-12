@@ -1,5 +1,6 @@
 <?php
 
+$DisPlayFeed = $_GET['feed'];
 $feed = urldecode($feed);
 $nid =$_GET['nid'];
 $ry= $_GET['ry'];
@@ -191,14 +192,16 @@ countredirect()
 //-->
 </script></td>
     <td>
+    
     <form action="MyRank.php" method="get"  class='searchform' name='ranker'>
+    <span class='next'><? echo $DisPlayFeed; ?>&nbsp;<? echo "(".$nid.")"; ?></span><br />
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
         <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
         <label for='rating'>Rating:</label>
         <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
-        &nbsp;<span><? echo "(".$nid.")"; ?></span>
+        
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;
       </form>
