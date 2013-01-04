@@ -26,14 +26,14 @@ mysql_select_db("feeder",$db);
 
 if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
   } else { 
+  		// Random dead page every ~5
 		if($i %5 == 0) {
-			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 
-			
+			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 			
 		} else {
 		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
   } 
 }
- // Random pages load
+ // Count pages for random cue
 $i++;	
   // Lets rate up some sleepers
   //else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating='0' ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; } 
@@ -138,7 +138,7 @@ echo " #sp_results:after {
 	-o-background-size: cover;
 	background-size: cover;
     opacity: 0.5;  top: 0; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1;  }";
- 
+ /*
  if($ry) {
 		echo ".chunk { max-width: 16.666%; }";
 		echo ".Today { max-width: 33.33%; }"; // 16.66*2=33.33
@@ -148,6 +148,11 @@ echo " #sp_results:after {
 		echo ".Today { max-width: 28.5%;  font-size: 100%;}"; // 14.28*2=28.5
 		echo ".Yesterday { max-width: 21.5%;  font-size: 90%; }"; // 14.28*1.5=21.5
 	}
+	*/
+echo ".chunk { max-width: 16.666%; }";
+echo ".Today { max-width: 33.33%; }"; // 16.66*2=33.33
+echo ".Yesterday { max-width: 25%; }"; // 16.66*1.5=25	
+	
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
 if(strpos($nrank,'h') !== false){ 
 	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; font-size: 75%; }";
@@ -187,7 +192,8 @@ var countdownfrom=
 	if($ry) { 
 			echo "65"; 
 		}else{ 
-			if($nrating >= "5") { echo "60"; }
+			if($nrating >= "90") { echo "20"; }
+			if($nrating == "5") { echo "60"; }
 			if($nrating == "4") { echo "50"; }
 			if($nrating == "3") { echo "40"; }
 			if($nrating == "2") { echo "30"; }
