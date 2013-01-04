@@ -1,5 +1,5 @@
 *{ box-sizing: border-box;} 
-body { background: #8a6525; font-family: Arial, Helvetica, sans-serif;  letter-spacing: 0.07em; }
+body { background: #252a32; font-family: Arial, Helvetica, sans-serif;  letter-spacing: 0.07em; }
  /* 252a32  8a6525*/
 .chunk { float: left; height: 530px;  padding: .5em; overflow:auto; color: #93a1a1; font-size: 75% ;  }
 

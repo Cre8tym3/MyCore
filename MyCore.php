@@ -6,6 +6,7 @@ $nid =$_GET['nid'];
 $ry= $_GET['ry'];
 $nrank= $_GET['rank'];
 $nrating= $_GET['rating'];
+$i= $_GET['i'];
 
 function random_pic($dir = 'RavesRuns')
 {
@@ -23,8 +24,17 @@ $MyYesterday = ($MyDay-"1");
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; }
-  else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; }
+if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
+  } else { 
+		if($i %5 == 0) {
+			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 
+			
+		} else {
+		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
+  } 
+}
+ // Random pages load
+$i++;	
   // Lets rate up some sleepers
   //else { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating='0' ORDER BY RAND() LIMIT 2) s ORDER BY s.rating ASC;"; } 
 
@@ -38,11 +48,14 @@ if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."
 			 $id = $myrow['id'];
 			 $rank = $myrow['rank'];
 			 $rating = $myrow['rating'];
-			 $i++;
+			 //$i++;
 			  
-			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."'>".$feeder."</a><br>";		
+			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."'>".$feeder."</a><br>";		
 			}
 		}
+		
+
+	
 
 // Start counting time for the page load
 $starttime = explode(' ', microtime());
@@ -149,7 +162,13 @@ if(strpos($nrank,'h') !== false){
     <td>
     <form name="redirect" class='searchform'>
       <form class='searchform'>
-        <input type="text" size="3" name="redirect2"  class="searchfield">
+        <input type="text" size="3" name="redirect2"  class="searchfield"><br />
+         <center>
+           <span class='next'>
+           <? echo $ry;
+		   	echo $i; ?>
+           </span>
+         </center>
       </form>
       <script>
 <!--
@@ -161,17 +180,18 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>"
+var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>&i=<? echo $i; ?>"
 //change the second to start counting down from
 var countdownfrom=
 <? 
 	if($ry) { 
-			echo "75"; 
+			echo "65"; 
 		}else{ 
-			if($nrating == "4") { echo "60"; }
-			if($nrating == "3") { echo "50"; }
-			if($nrating == "2") { echo "40"; }
-			if($nrating == "1") { echo "30"; }			
+			if($nrating >= "5") { echo "60"; }
+			if($nrating == "4") { echo "50"; }
+			if($nrating == "3") { echo "40"; }
+			if($nrating == "2") { echo "30"; }
+			if($nrating == "1") { echo "20"; }			
 		 } 
 ?>
 
@@ -194,7 +214,7 @@ countredirect()
     <td>
     
     <form action="MyRank.php" method="get"  class='searchform' name='ranker'>
-    <span class='next'><? echo $DisPlayFeed; ?>&nbsp;<? echo "(".$nid.")"; ?></span><br />
+   
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
@@ -203,12 +223,13 @@ countredirect()
         <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
         
         <input type="submit" value="rank" class="button searchbutton" />
-        &nbsp;
+        &nbsp;<br />
+         <span class='next'><? echo $DisPlayFeed; ?>&nbsp;<? echo "(".$nid.")"; ?></span>
       </form>
       <script type="text/javascript">
  document.ranker.rating.focus();
 </script></td>
-    <td><p class='next'><? echo "$ry $temp"; ?></p></td>
+    <td><p class='next'><? echo "$temp"; ?></p></td>
     <td>
     
     <script type="text/javascript">
@@ -232,7 +253,6 @@ countredirect()
 	document.write("<h4><span>" + hours + ":" + minutes + " " + suffix + "</span></h4>")
 //-->
 </script>
-
 </td>
   </tr>
 </table>
