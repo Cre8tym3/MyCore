@@ -27,8 +27,8 @@ mysql_select_db("feeder",$db);
 
 if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
   } else { 
-  		// Random dead page every ~5
-		if($i %5 == 0) {
+  		// Random dead page every 5
+		if($i %10 == 0) {
 			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 			
 		} else {
 		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
@@ -204,8 +204,12 @@ var countdownfrom=
 			if($nrating == "2") { $myTimer = "30"; }
 			if($nrating == "1") { $myTimer = "20"; }			
 		 } 
+		 /*
+		 // Found that the longer reading time lead to more distraction
 		 $myTimerPlus = $myTimer+$i;
 		 echo $myTimerPlus;
+		 */
+		 echo $myTimer;
 ?>
 
 
