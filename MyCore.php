@@ -7,6 +7,7 @@ $ry= $_GET['ry'];
 $nrank= $_GET['rank'];
 $nrating= $_GET['rating'];
 $i= $_GET['i'];
+$ii = "1";
 
 function random_pic($dir = 'RavesRuns')
 {
@@ -24,13 +25,13 @@ $MyYesterday = ($MyDay-"1");
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
+if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
   } else { 
   		// Random dead page every ~5
 		if($i %5 == 0) {
 			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 			
 		} else {
-		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'90' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
+		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
   } 
 }
  // Count pages for random cue
@@ -155,8 +156,12 @@ echo ".Yesterday { max-width: 25%; }"; // 16.66*1.5=25
 	
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
 if(strpos($nrank,'h') !== false){ 
-	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; font-size: 75%; }";
+	echo ".chunk,  .Today, .Yesterday { max-width: 14.285%; font-size: 75%; max-height: 530px; }";
+	} else {
+		echo ".chunk { height: 530px;  }";
 	}
+	
+
 ?>
 </style>
 </head>
@@ -190,15 +195,17 @@ var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? ech
 var countdownfrom=
 <? 
 	if($ry) { 
-			echo "65"; 
+			$myTimer = "65"; 
 		}else{ 
-			if($nrating >= "90") { echo "20"; }
-			if($nrating == "5") { echo "60"; }
-			if($nrating == "4") { echo "50"; }
-			if($nrating == "3") { echo "40"; }
-			if($nrating == "2") { echo "30"; }
-			if($nrating == "1") { echo "20"; }			
+			if($nrating >= "90") { $myTimer = "20"; }
+			if($nrating == "5") { $myTimer = "60"; }
+			if($nrating == "4") { $myTimer = "50"; }
+			if($nrating == "3") { $myTimer = "40"; }
+			if($nrating == "2") { $myTimer = "30"; }
+			if($nrating == "1") { $myTimer = "20"; }			
 		 } 
+		 $myTimerPlus = $myTimer+$i;
+		 echo $myTimerPlus;
 ?>
 
 
@@ -262,7 +269,10 @@ countredirect()
 </td>
   </tr>
 </table>
+
 <?php
+if(strpos($nrank,'h') !== false) { echo "<div class='clearfix'>"; }
+
 			// Check to see if there are more than zero errors (i.e. if there are any errors at all)
 			if ($feed->error())
 			{
@@ -291,8 +301,10 @@ countredirect()
   <?php echo $feed->get_description(); ?> </div>
 
 <!-- Let's begin looping through each individual news item in the feed. -->
-<?php foreach($feed->get_items() as $item): ?>
-<div class="chunk <?php if($MyDay==$item->get_date('j')) { echo " Today"; } if($MyYesterday==$item->get_date('j')) { echo " Yesterday"; }   ?>" id="box<? echo $i; ?>"> 
+<?php foreach($feed->get_items() as $item): 
+$ii++; ?>
+
+<div class="chunk <?php if($MyDay==$item->get_date('j')) { echo " Today"; } if($MyYesterday==$item->get_date('j')) { echo " Yesterday"; }   ?>" id="box<? echo $ii; ?>"> 
   
   <!-- If the item has a permalink back to the original post (which 99% of them do), link the item's title to it. -->
   <h4>
@@ -329,7 +341,11 @@ countredirect()
 							{
 								echo '<div><img src="' . $enclosure->get_thumbnail() . '" alt="" /></div>';
 							}
+							//echo $ii;
+							//echo $ii %7 ;
+							
 							echo '</div>';
+							if(($ii %7 == 0)&&(strpos($nrank,'h') !== false)) { echo "</div>\n<div class='clearfix'>"; }
 							
 						}
 						?> </div>
@@ -342,5 +358,6 @@ countredirect()
 
 <!-- From here on, we're no longer using data from the feed. -->
 <?php endif; ?>
+</div>
 </body>
 </html>
