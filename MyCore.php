@@ -9,6 +9,7 @@ $nrating= $_GET['rating'];
 $i= $_GET['i'];
 $ii = "1";
 
+
 function random_pic($dir = 'RavesRuns')
 {
     $files = glob($dir . '/*.*');
@@ -21,13 +22,19 @@ date_default_timezone_set('America/New_York');
 $MyDay=date(d);
 $MyYesterday = ($MyDay-"1");
 
+$clockTime = date("h:i A");
+$myHour = date("G"); 
+	if($myHour <= "11") { $ry = "q"; }
+	if($myHour >= "11" && $myHour <= "13") { $ry = "v"; }
+	if($myHour >= "13") { $ry = ""; }
+
 
 $db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
 if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
   } else { 
-  		// Random dead page every 5
+  		// Random dead page every 10
 		if($i %10 == 0) {
 			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 			
 		} else {
@@ -175,8 +182,7 @@ if(strpos($nrank,'h') !== false){
         <input type="text" size="3" name="redirect2"  class="searchfield"><br />
          <center>
            <span class='next'>
-           <? echo $ry;
-		   	echo $i; ?>
+           <? echo $ry.":".$i; ?>
            </span>
          </center>
       </form>
@@ -249,27 +255,10 @@ countredirect()
     <td><p class='next'><? echo "$temp"; ?></p></td>
     <td>
     
-    <script type="text/javascript">
-<!--
-	var currentTime = new Date()
-	var hours = currentTime.getHours()
-	var minutes = currentTime.getMinutes()
 
-	if (minutes < 10)
-	minutes = "0" + minutes
-
-	var suffix = "am";
-	if (hours >= 12) {
-	suffix = "pm";
-	hours = hours - 12;
-	}
-	if (hours == 0) {
-	hours = 12;
-	}
-
-	document.write("<h4><span>" + hours + ":" + minutes + " " + suffix + "</span></h4>")
-//-->
-</script>
+<?php
+echo "<h4><span>" .$clockTime."</span></h4>"; 
+?>
 </td>
   </tr>
 </table>
