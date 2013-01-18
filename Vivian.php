@@ -1,9 +1,11 @@
 <?php
 
+$MyPage = "Vivian";
+
 $DisPlayFeed = $_GET['feed'];
 $feed = urldecode($feed);
 $nid =$_GET['nid'];
-$ry= $_GET['ry'];
+//$ry= $_GET['ry'];
 $nrank= $_GET['rank'];
 $nrating= $_GET['rating'];
 $i= $_GET['i'];
@@ -25,23 +27,17 @@ function random_pic($dir = 'RavesRuns')
 //$myHour = date("G");  // Auto shift categories per hour of the day (24 hour clock)
 $myHour = date("i"); 
 	if($myHour <= "20") { $ry = "m"; }
-	if($myHour >= "20" && $myHour <= "30") { $ry = "q"; }
-	if($myHour >= "30" && $myHour <= "40") { $ry = "v"; }
-	if($myHour >= "40") { $ry = ""; }
+	if($myHour >= "20" && $myHour <= "40") { $ry = "m"; }
+	if($myHour >= "40") { $ry = "m"; }
 
 // Conect to DB
-$db = mysql_connect("localhost","root","password"); 
+$db = mysql_connect("localhost","root","password");
 mysql_select_db("feeder",$db);
 
-if($ry) { $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
-  } else { 
-  		// Random dead page every 10
-		if($i %10 == 0) {
-			$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating>'90' ORDER BY RAND() LIMIT 3) s;"; 			
-		} else {
-		  $sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC;"; 
-  } 
-}
+$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE rank LIKE '%".$ry."%' && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
+// small hack to give Vivian M and L
+ //$sql = "SELECT * FROM (SELECT * FROM DaFeeds WHERE (rank LIKE '%m%' || rank LIKE '%l%') && rating<'80' ORDER BY RAND() LIMIT 3) s ORDER BY s.rating ASC"; 
+
  // Count pages for random cue
 $i++;	
   // Lets rate up some sleepers
@@ -59,7 +55,7 @@ $i++;
 			 $rating = $myrow['rating'];
 			 //$i++;
 			  
-			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."'>".$feeder."</a><br>";		
+			 $temp .= "$rating - $rank <a href='".$MyPage.".php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."'>".$feeder."</a><br>";		
 			}
 		}	
 
@@ -191,12 +187,12 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>&i=<? echo $i; ?>"
+var targetURL="<? echo $MyPage; ?>.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>&i=<? echo $i; ?>"
 //change the second to start counting down from
 var countdownfrom=
 <? 
 	if($ry) { 
-			$myTimer = "65"; 
+			$myTimer = "35"; 
 		}else{ 
 			if($nrating >= "90") { $myTimer = "20"; }
 			if($nrating == "5") { $myTimer = "60"; }
@@ -228,7 +224,7 @@ var currentsecond=document.redirect.redirect2.value=countdownfrom+1
 countredirect()
 //-->
 </script></td>
-    <td>
+<td>
     
     <form action="MyRank.php" method="get"  class='searchform' name='ranker'>
    
@@ -246,24 +242,13 @@ countredirect()
       <script type="text/javascript">
  document.ranker.rating.focus();
 </script></td>
+   
     <td><p class='next'><? echo "$temp"; ?></p></td>
-    <td>
-<script language="javascript" type="text/javascript">
-<!--
-function popitup(url) {
-	newwindow=window.open(url,'name','height=600,width=450');
-	if (window.focus) {newwindow.focus()}
-	return false;
-}
+    <td>    
 
-// -->
-</script>
-<p class='next'>FeedMonster<br />
-<a href="README.txt" onclick="return popitup('README.txt')">Category Key</a><br />
-<a href="http://paggis.library.musc.edu/~paggis/phpmyadmin/index.php">PHPMyAdmin</a></p>
-</td>
-<td> 
-	<?php echo "<h4><span>" .$clockTime."</span></h4>";  ?>
+<?php
+echo "<h4><span>" .$clockTime."</span></h4>"; 
+?>
 </td>
   </tr>
 </table>
