@@ -130,7 +130,7 @@ $feed->handle_content_type();
 <title>Feed Monster</title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
- <? 
+ <?php  
  //echo "body { background: url('".random_pic()."') #252a32; } ";
  
 echo " #sp_results:after {
@@ -173,7 +173,7 @@ if(strpos($nrank,'h') !== false){
         <input type="text" size="3" name="redirect2"  class="searchfield"><br />
          <center>
            <span class='next'>
-           <? echo $ry.":".$i; ?>
+           <?php  echo $ry.":".$i; ?>
            </span>
          </center>
       </form>
@@ -187,10 +187,10 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="<? echo $MyPage; ?>.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>&i=<? echo $i; ?>"
+var targetURL="<?php  echo $MyPage; ?>.php?feed=<?php  echo $feeder; ?>&nid=<?php  echo $id; ?>&ry=<?php  echo $ry; ?>&rank=<?php  echo $rank; ?>&rating=<?php  echo $rating; ?>&i=<?php  echo $i; ?>"
 //change the second to start counting down from
 var countdownfrom=
-<? 
+<?php  
 	if($ry) { 
 			$myTimer = "35"; 
 		}else{ 
@@ -231,19 +231,19 @@ countredirect()
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
-        <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
+        <input type="text" name="status" value="<?php  echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
         <label for='rating'>Rating:</label>
-        <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
+        <input type="text" name="rating" value="<?php  echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
         
         <input type="submit" value="rank" class="button searchbutton" />
         &nbsp;<br />
-         <span class='next'><? echo $DisPlayFeed; ?>&nbsp;<? echo "(".$nid.")"; ?></span>
+         <span class='next'><?php  echo $DisPlayFeed; ?>&nbsp;<?php  echo "(".$nid.")"; ?></span>
       </form>
       <script type="text/javascript">
  document.ranker.rating.focus();
 </script></td>
    
-    <td><p class='next'><? echo "$temp"; ?></p></td>
+    <td><p class='next'><?php  echo "$temp"; ?></p></td>
     <td>    
 
 <?php
@@ -252,7 +252,7 @@ echo "<h4><span>" .$clockTime."</span></h4>";
 </td>
   </tr>
 </table>
-
+<div id='contentBloks'>
 <?php
 if(strpos($nrank,'h') !== false) { echo "<div class='clearfix'>"; }
 
@@ -291,7 +291,7 @@ $ii++; ?>
 	<?php 
     // Note with CSS class Todays and Yesterdays posts
     if($MyDay==$item->get_date('j')) { echo " Today"; } if($MyYesterday==$item->get_date('j')) { echo " Yesterday"; }  
-     ?>" id="box<? echo $ii; ?>"> 
+     ?>" id="box<?php  echo $ii; ?>"> 
   
   <!-- If the item has a permalink back to the original post (which 99% of them do), link the item's title to it. -->
   <h4>
@@ -349,6 +349,7 @@ endforeach;
 
 <!-- From here on, we're no longer using data from the feed. -->
 <?php endif; ?>
+</div>
 </div>
 </body>
 </html>

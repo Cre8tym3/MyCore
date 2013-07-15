@@ -9,6 +9,7 @@ $nrating= $_GET['rating'];
 $i= $_GET['i'];
 $ii = "1";
 
+
 date_default_timezone_set('America/New_York');
 $MyDay=date(d);
 $MyYesterday = ($MyDay-"1");
@@ -21,13 +22,45 @@ function random_pic($dir = 'RavesRuns')
     return $files[$file];
 }
 
+$myHour = date("G");  
+$baseTime = round('100'-($myHour*'6'));
 // Auto shift categories per time of the day
-//$myHour = date("G");  // Auto shift categories per hour of the day (24 hour clock)
-$myHour = date("i"); 
-	if($myHour <= "20") { $ry = "m"; }
-	if($myHour >= "20" && $myHour <= "30") { $ry = "q"; }
-	if($myHour >= "30" && $myHour <= "40") { $ry = "v"; }
-	if($myHour >= "40") { $ry = ""; }
+$myMinute = date("i"); 
+	if($myMinute <= "5") { $ry = "r"; }
+	if($myMinute >= "5" && $myMinute <= "10") { $ry = "d"; }
+	if($myMinute >= "10" && $myMinute <= "15") { $ry = "q"; }
+	if($myMinute >= "15" && $myMinute <= "25") { $ry = "v"; }
+	if($myMinute >= "25" && $myMinute <= "35") { $ry = "l"; }
+	if($myMinute >= "35") { $ry = ""; }
+
+// Refresh timer logic	
+			if($nrating >= "90") { $myTimer = $baseTime+'5'; }
+			if($nrating == "7") { $myTimer = $baseTime+'65'; }
+			if($nrating == "6") { $myTimer = $baseTime+'55'; }
+			if($nrating == "5") { $myTimer = $baseTime+'45'; }
+			if($nrating == "4") { $myTimer = $baseTime+'35'; }
+			if($nrating == "3") { $myTimer = $baseTime+'25'; }
+			if($nrating == "2") { $myTimer = $baseTime+'15'; }
+			if($nrating == "1") { $myTimer = $baseTime+'5'; }
+	 /*
+	if($ry) { 
+			$myTimer = $baseTime+'50'; 
+		}else{ 
+		
+			if($nrating >= "90") { $myTimer = $baseTime+'5'; }
+			if($nrating == "7") { $myTimer = $baseTime+'65'; }
+			if($nrating == "6") { $myTimer = $baseTime+'55'; }
+			if($nrating == "5") { $myTimer = $baseTime+'45'; }
+			if($nrating == "4") { $myTimer = $baseTime+'35'; }
+			if($nrating == "3") { $myTimer = $baseTime+'25'; }
+			if($nrating == "2") { $myTimer = $baseTime+'15'; }
+			if($nrating == "1") { $myTimer = $baseTime+'5'; }			
+		 } 
+		
+		 // Found that the longer reading time lead to more distraction
+		 $myTimerPlus = $myTimer+$i;
+		 echo $myTimerPlus;
+		 */
 
 // Conect to DB
 $db = mysql_connect("localhost","root","password"); 
@@ -134,10 +167,10 @@ $feed->handle_content_type();
 <title>Feed Monster</title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
- <? 
+ <?php  
  //echo "body { background: url('".random_pic()."') #252a32; } ";
  
-echo " #sp_results:after {
+echo " #contentBloks:after {
     content: \"\"; background: url(".random_pic().") no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -155,17 +188,21 @@ echo " #sp_results:after {
 		echo ".Yesterday { max-width: 21.5%;  font-size: 90%; }"; // 14.28*1.5=21.5
 	}
 	*/
-echo ".chunk { max-width: 16.666%; }";
-echo ".Today { max-width: 33.33%;  font-size: 100%; }"; // 16.66*2=33.33
-echo ".Yesterday { max-width: 25%;  font-size: 90%; }"; // 16.66*1.5=25	
+echo ".chunk { max-width: 20%; }";
+echo ".Today { max-width: 40%;  font-size: 100%; }"; // 16.66*2=33.33
+echo ".Yesterday { max-width: 30%;  font-size: 90%; }"; // 16.66*1.5=25	
 	
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
 if(strpos($nrank,'h') !== false){ 
-	echo ".chunk,  .Today, .Yesterday { max-width: 12.5%; font-size: 75%; max-height: 530px; }";
+	echo ".chunk,  .Today, .Yesterday { max-width: 20%; font-size: 75%; max-height: 630px; }";
 	} else {
-		echo ".chunk { height: 530px;  }";
+		echo ".chunk { height: 630px;  }";
 	}
+if(strpos($nrank,'s') !== false){ 
+	echo ".chunk,  .Today, .Yesterday {  height: 1300px; max-height: 1300px; }";
+	} 
 ?>
+
 </style>
 </head>
 <body id="bodydemo" >
@@ -177,7 +214,7 @@ if(strpos($nrank,'h') !== false){
         <input type="text" size="3" name="redirect2"  class="searchfield"><br />
          <center>
            <span class='next'>
-           <? echo $ry.":".$i; ?>
+           <?php  echo $ry.":".$i; ?>
            </span>
          </center>
       </form>
@@ -191,25 +228,11 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<? echo $feeder; ?>&nid=<? echo $id; ?>&ry=<? echo $ry; ?>&rank=<? echo $rank; ?>&rating=<? echo $rating; ?>&i=<? echo $i; ?>"
+var targetURL="MyCore.php?feed=<?php  echo $feeder; ?>&nid=<?php  echo $id; ?>&ry=<?php  echo $ry; ?>&rank=<?php  echo $rank; ?>&rating=<?php  echo $rating; ?>&i=<?php  echo $i; ?>"
 //change the second to start counting down from
 var countdownfrom=
-<? 
-	if($ry) { 
-			$myTimer = "65"; 
-		}else{ 
-			if($nrating >= "90") { $myTimer = "20"; }
-			if($nrating == "5") { $myTimer = "60"; }
-			if($nrating == "4") { $myTimer = "50"; }
-			if($nrating == "3") { $myTimer = "40"; }
-			if($nrating == "2") { $myTimer = "30"; }
-			if($nrating == "1") { $myTimer = "20"; }			
-		 } 
-		 /*
-		 // Found that the longer reading time lead to more distraction
-		 $myTimerPlus = $myTimer+$i;
-		 echo $myTimerPlus;
-		 */
+<?php  
+		
 		 echo $myTimer;
 ?>
 
@@ -235,18 +258,18 @@ countredirect()
         <!-- If a feed has already been passed through the form, then make sure that the URL remains in the form field. -->
         <input type="hidden" name="id" value="<?php echo $nid; ?>" />
         <label for='status'>&nbsp;Categories:</label>
-        <input type="text" name="status" value="<? echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
+        <input type="text" name="status" value="<?php  echo $nrank ?>" class="text searchfield" id="feed_input" size='6' />
         <label for='rating'>Rating:</label>
-        <input type="text" name="rating" value="<? echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
+        <input type="text" name="rating" value="<?php  echo $nrating ?>" class="text searchfield" id="feed_input" size='2' />
         
-        <input type="submit" value="rank" class="button searchbutton" />
-        &nbsp;<br />
-         <span class='next'><? echo $DisPlayFeed; ?>&nbsp;<? echo "(".$nid.")"; ?></span>
+       <input type="submit" value="rank" class="button searchbutton" />
+        &nbsp;-<br />
+         <span class='next'><?php  echo $DisPlayFeed; ?>&nbsp;<?php  echo "(".$nid.")"; ?></span>
       </form>
       <script type="text/javascript">
  document.ranker.rating.focus();
 </script></td>
-    <td><p class='next'><? echo "$temp"; ?></p></td>
+    <td><p class='next'><?php  echo "$temp"; ?></p></td>
     <td>
 <script language="javascript" type="text/javascript">
 <!--
@@ -267,6 +290,8 @@ function popitup(url) {
 </td>
   </tr>
 </table>
+
+<div id='contentBloks'>
 
 <?php
 if(strpos($nrank,'h') !== false) { echo "<div class='clearfix'>"; }
@@ -306,7 +331,7 @@ $ii++; ?>
 	<?php 
     // Note with CSS class Todays and Yesterdays posts
     if($MyDay==$item->get_date('j')) { echo " Today"; } if($MyYesterday==$item->get_date('j')) { echo " Yesterday"; }  
-     ?>" id="box<? echo $ii; ?>"> 
+     ?>" id="box<?php  echo $ii; ?>"> 
   
   <!-- If the item has a permalink back to the original post (which 99% of them do), link the item's title to it. -->
   <h4>
@@ -315,7 +340,12 @@ $ii++; ?>
     <span>( <?php echo $item->get_date('j M Y, g:i a'); ?> )</span></h4>
   
   <!-- Display the item's primary content. --> 
-  <?php echo "<p>".$item->get_content()."";						
+  <?php 
+  
+ // Height deleter
+$content = str_replace("height=", "", $item->get_content()); 
+  
+echo "<p>".$content."";						
 						
 						
 						// Check for enclosures.  If an item has any, set the first one to the $enclosure variable.
@@ -347,7 +377,7 @@ $ii++; ?>
 							//echo $ii %7 ;
 							
 							echo '</div>';
-							if(($ii %8 == 0)&&(strpos($nrank,'h') !== false)) { echo "</div>\n<div class='clearfix'>"; }
+							if(($ii %5 == 0)&&(strpos($nrank,'h') !== false)) { echo "</div>\n<div class='clearfix'>"; }
 							
 						}
 						?> </div>
@@ -364,6 +394,7 @@ endforeach;
 
 <!-- From here on, we're no longer using data from the feed. -->
 <?php endif; ?>
+</div>
 </div>
 </body>
 </html>

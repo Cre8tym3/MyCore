@@ -4,12 +4,13 @@ MyCore Ranking guide
 98 but bored with 
 re-evalueating ( 88 && 89 )
 
-A -  medical / 
+A -  medical /
 
-D - dev
-E - entertainment
+C- Consumables / Food
+D - Dev
+E - Entertainment
 
-H - heavy
+H - heavy (narrow display)
 I - image
 J - jobs
 L- local
@@ -17,8 +18,10 @@ M - Food / MUSC /  ( also going to Vivians saver )
 N - news
 O - old
 P- problem
-Q - quick
+Q - quick reads
 R - running
+S - Scroller ( long image posts )
 T - tech / 
-V - value
+V - in evaluation 
 W - work related
+X - NSFW (potentially)
