@@ -194,13 +194,17 @@ echo ".Yesterday { max-width: 30%;  font-size: 90%; }"; // 16.66*1.5=25
 	
 // 	6 = 16.666% 7 = 14.285% 8 = 12.5%
 if(strpos($nrank,'h') !== false){ 
-	echo ".chunk,  .Today, .Yesterday { max-width: 20%; font-size: 75%; max-height: 630px; }";
+	echo ".chunk,  .Today,  .Yesterday { max-width: 20%; font-size: 75%; max-height: 630px; }";
 	} else {
 		echo ".chunk { height: 630px;  }";
 	}
 if(strpos($nrank,'s') !== false){ 
-	echo ".chunk,  .Today, .Yesterday {  height: 1300px; max-height: 1300px; }";
+	echo ".chunk,  .Today,  .Yesterday {  height: 1300px; max-height: 1300px; }";
 	} 
+if(strpos($nrank,'b') !== false){ 
+	//echo ".chunk,  .Today,  .Yesterday { max-height: 630px; }";
+	echo ".content {  font-size: 1px; }";
+	} 	
 ?>
 
 </style>
@@ -345,7 +349,7 @@ $ii++; ?>
  // Height deleter
 $content = str_replace("height=", "", $item->get_content()); 
   
-echo "<p>".$content."";						
+echo "<div class='content'<p>".$content."";						
 						
 						
 						// Check for enclosures.  If an item has any, set the first one to the $enclosure variable.
@@ -380,7 +384,7 @@ echo "<p>".$content."";
 							if(($ii %5 == 0)&&(strpos($nrank,'h') !== false)) { echo "</div>\n<div class='clearfix'>"; }
 							
 						}
-						?> </div>
+						?> </div></div>
 
 <!-- Stop looping through each item once we've gone through all of them. -->
 <?php

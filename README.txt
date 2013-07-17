@@ -5,7 +5,7 @@ MyCore Ranking guide
 re-evalueating ( 88 && 89 )
 
 A -  medical /
-
+B - Itty Bitty Text
 C- Consumables / Food
 D - Dev
 E - Entertainment
