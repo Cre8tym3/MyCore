@@ -362,7 +362,7 @@ echo "<div class='content'<p>".$content."";
 								'video' => './for_the_demo/place_video.png',
 								'mediaplayer' => './for_the_demo/mediaplayer.swf',
 								'altclass' => 'download'
-							)) . '</p>';
+							)) . '</p></div>';
 
 							if ($enclosure->get_link() && $enclosure->get_type())
 							{
@@ -371,7 +371,7 @@ echo "<div class='content'<p>".$content."";
 								{
 									echo '; ' . $enclosure->get_size() . ' MB';
 								}
-								echo ')</p>';
+								echo ')</p></div>';
 							}
 							if ($enclosure->get_thumbnail())
 							{
@@ -384,7 +384,7 @@ echo "<div class='content'<p>".$content."";
 							if(($ii %5 == 0)&&(strpos($nrank,'h') !== false)) { echo "</div>\n<div class='clearfix'>"; }
 							
 						}
-						?> </div></div>
+						?> </div>
 
 <!-- Stop looping through each item once we've gone through all of them. -->
 <?php
