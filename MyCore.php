@@ -371,7 +371,7 @@ echo "<div class='content'<p>".$content."";
 								{
 									echo '; ' . $enclosure->get_size() . ' MB';
 								}
-								echo ')</p></div>';
+								echo ')</p>';
 							}
 							if ($enclosure->get_thumbnail())
 							{
