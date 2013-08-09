@@ -9,6 +9,7 @@ B - Itty Bitty Text
 C- Consumables / Food
 D - Dev
 E - Entertainment
+F - Faith
 
 H - heavy (narrow display)
 I - image

@@ -23,7 +23,7 @@ function random_pic($dir = 'RavesRuns')
 }
 
 $myHour = date("G");  
-$baseTime = round('100'-($myHour*'6'));
+$baseTime = round('100'-($myHour*'6.75')); // smaller numbers here are long display times
 // Auto shift categories per time of the day
 $myMinute = date("i"); 
 	if($myMinute <= "5") { $ry = "r"; }
@@ -31,7 +31,8 @@ $myMinute = date("i");
 	if($myMinute >= "10" && $myMinute <= "15") { $ry = "q"; }
 	if($myMinute >= "15" && $myMinute <= "25") { $ry = "v"; }
 	if($myMinute >= "25" && $myMinute <= "35") { $ry = "l"; }
-	if($myMinute >= "35") { $ry = ""; }
+	if($myMinute >= "35" && $myMinute <= "40") { $ry = "f"; }
+	if($myMinute >= "40") { $ry = ""; }
 
 // Refresh timer logic	
 			if($nrating >= "90") { $myTimer = $baseTime+'5'; }

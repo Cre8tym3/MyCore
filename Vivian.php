@@ -300,7 +300,12 @@ $ii++; ?>
     <span>( <?php echo $item->get_date('j M Y, g:i a'); ?> )</span></h4>
   
   <!-- Display the item's primary content. --> 
-  <?php echo "<p>".$item->get_content()."";						
+  <?php
+  
+   // Height deleter
+$content = str_replace("height=", "", $item->get_content()); 
+  
+echo "<div class='content'<p>".$content."";						
 						
 						
 						// Check for enclosures.  If an item has any, set the first one to the $enclosure variable.
@@ -313,7 +318,7 @@ $ii++; ?>
 								'video' => './for_the_demo/place_video.png',
 								'mediaplayer' => './for_the_demo/mediaplayer.swf',
 								'altclass' => 'download'
-							)) . '</p>';
+							)) . '</p></div>';
 
 							if ($enclosure->get_link() && $enclosure->get_type())
 							{
