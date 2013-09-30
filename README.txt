@@ -4,7 +4,7 @@ MyCore Ranking guide
 98 but bored with 
 re-evalueating ( 88 && 89 )
 
-A -  medical /
+A -  medical
 B - Itty Bitty Text
 C- Consumables / Food
 D - Dev
@@ -20,9 +20,9 @@ N - news
 O - old
 P- problem
 Q - quick reads
-R - running
+R - running / health
 S - Scroller ( long image posts )
-T - tech / 
+T - tech
 V - in evaluation 
 W - work related
 X - NSFW (potentially)

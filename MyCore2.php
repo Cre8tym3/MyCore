@@ -7,6 +7,7 @@ $ry= $_GET['ry'];
 $nrank= $_GET['rank'];
 $nrating= $_GET['rating'];
 $i= $_GET['i'];
+$ntitle= $_GET['ntitle'];
 $ii = "1";
 
 
@@ -91,9 +92,12 @@ $i++;
 			 $id = $myrow['id'];
 			 $rank = $myrow['rank'];
 			 $rating = $myrow['rating'];
+			  $title = $myrow['title'];
 			 //$i++;
 			  
-			 $temp .= "$rating - $rank <a href='MyCore.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."'>".$feeder."</a><br>";		
+			  if($title) { $temp .= "$rating - $rank <a href='MyCore2.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."&ntitle=".$title."'>".$title."</a><br>";	 }
+			  else { $temp .= "$rating - $rank <a href='MyCore2.php?feed=".$feeder."&nid=".$id."&ry=".$ry."&rank=".$rank."&rating=".$rating."&i=".$i."&ntitle=".$title."'>".$feeder."</a><br>";	 }
+			  unset($title);
 			}
 		}	
 
@@ -165,7 +169,7 @@ $feed->handle_content_type();
 
 <html lang="en-US">
 <head>
-<title>Feed Monster</title>
+<title>FM: <?php echo $ntitle; ?></title>
 <link rel="stylesheet" href="MyStyle.css" type="text/css" media="screen">
 <style>
  <?php  
@@ -276,7 +280,7 @@ Over 400+ free scripts here!
 */
 
 //change below target URL to your own
-var targetURL="MyCore.php?feed=<?php  echo $feeder; ?>&nid=<?php  echo $id; ?>&ry=<?php  echo $ry; ?>&rank=<?php  echo $rank; ?>&rating=<?php  echo $rating; ?>&i=<?php  echo $i; ?>"
+var targetURL="MyCore2.php?feed=<?php  echo $feeder; ?>&nid=<?php  echo $id; ?>&ry=<?php  echo $ry; ?>&rank=<?php  echo $rank; ?>&rating=<?php  echo $rating; ?>&i=<?php  echo $i; ?>&ntitle=<?php  echo $title; ?>"
 //change the second to start counting down from
 var countdownfrom=
 <?php  
@@ -333,7 +337,9 @@ if(strpos($nrank,'h') !== false) { echo "<div class='clearfix'>"; }
   
   <!-- If the feed has a link back to the site that publishes it (which 99% of them do), link the feed's title to it. -->
   <h3 class="header">
-    <?php if ($feed->get_link()) echo '<a href="' . $feed->get_link() . '">'; echo $feed->get_title(); if ($feed->get_link()) echo '</a>'; ?>
+    <?php
+	$blogTitle=$feed->get_title();
+	 if ($feed->get_link()) echo '<a href="' . $feed->get_link() . '">'; echo $blogTitle; if ($feed->get_link()) echo '</a>'; ?>
   </h3>
   
   <!-- If the feed has a description, display it. --> 
@@ -412,6 +418,12 @@ endforeach;
 <?php endif; ?>
 </div>
 </div>
+<?php
+ # Updater #########################
+			 $sql5 = "UPDATE DaFeeds SET title='".$blogTitle."' WHERE id =".$nid.""; 
+			 //echo $sql5;
+			$result5 = mysql_query($sql5,$db);
+?>
 
 </body>
 </html>
